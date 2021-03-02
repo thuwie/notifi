@@ -1,3 +1,5 @@
+const Countdown = require('./src/Countdown');
+
 const { createServer } = require('http');
 const TelegramRequest = require('./src/TelegramRequest');
 const PORT = process.env.PORT || 5000
@@ -35,3 +37,6 @@ server.listen(PORT, (err) => {
   }
   console.log(`server is listening on ${PORT}`);
 });
+
+const countdown = new Countdown();
+countdown.startTimer();
