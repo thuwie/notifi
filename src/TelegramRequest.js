@@ -36,6 +36,9 @@ class TelegramRequest {
 
   createPayload() {
     if (this.body[this.fields.kind] === this.events.mr) {
+      if (this.body[this.fields.attributes].state !== 'opened') {
+        throw new Error('Le Workaround to skip any but opened');
+      }
       this.message = this.createMergeRequestMessage(this.body);
     }
 
@@ -45,8 +48,8 @@ class TelegramRequest {
   }
 
   async sendRequest() {
-    this.createPayload();
     try {
+      this.createPayload();
       await post(this.botUrl, null, {
         params: {
           chat_id: this.chatId,
