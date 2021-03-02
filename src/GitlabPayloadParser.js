@@ -31,6 +31,10 @@ class GitlabPayloadParser {
 
   createPayload() {
     if (this.body[this.fields.kind] === this.events.mr) {
+      if (this.body[this.fields.attributes].state !== 'opened' ||
+        this.body[this.fields.attributes].action !== 'open') {
+        throw new Error('Le Workaround to skip any but opened');
+      }
       this.message = this.createMergeRequestMessage(this.body);
     }
 
