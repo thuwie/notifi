@@ -1,7 +1,9 @@
-const { createServer } = require('http');
-const TelegramRequest = require('./src/TelegramRequest');
-const PORT = process.env.PORT || 5000
+const Countdown = require('./src/Countdown');
 
+const { createServer } = require('http');
+const { parse } = require('url');
+const TelegramRequest = require('./src/TelegramRequest');
+const PORT = process.env.PORT || 5000;
 
 function handlePostRequest(request) {
   if (request.method === 'POST') {
@@ -18,12 +20,19 @@ function handlePostRequest(request) {
       });
     }));
   }
+  // ?timestamp=timestamp
+  if (request.method === 'PUT') {
+    const queryObject = parse(request.url, true).query;
+    countdown.setDeadline(queryObject.timestamp);
+  }
 }
 
 const requestHandler = async (req, res) => {
   if (req.url === '/favicon.ico') return;
   const body = await handlePostRequest(req);
-  await new TelegramRequest(body).sendRequest();
+  if (body) {
+    await new TelegramRequest(body).sendRequest();
+  }
   res.end();
 };
 
@@ -35,3 +44,6 @@ server.listen(PORT, (err) => {
   }
   console.log(`server is listening on ${PORT}`);
 });
+
+const countdown = new Countdown();
+countdown.startTimer();
