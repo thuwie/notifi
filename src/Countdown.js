@@ -10,7 +10,10 @@ class Countdown {
   }
 
   startTimer() {
-    const job = new Cron('0 0 13 * * 1-5', () => {this.sendPayload();}, null,
+    const job = new Cron('0 30 14 * * 1-5', () => {
+        console.log('Tick');
+        this.sendPayload();
+      }, null,
       true);
   }
 
