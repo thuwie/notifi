@@ -1,5 +1,3 @@
-const Countdown = require('./src/Countdown');
-
 const { createServer } = require('http');
 const { parse } = require('url');
 const TelegramRequest = require('./src/TelegramRequest');
@@ -44,6 +42,3 @@ server.listen(PORT, (err) => {
   }
   console.log(`server is listening on ${PORT}`);
 });
-
-const countdown = new Countdown();
-countdown.startTimer();
